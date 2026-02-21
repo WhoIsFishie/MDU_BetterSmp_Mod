@@ -1,0 +1,30 @@
+# Gradle
+.gradle/
+build/
+
+# Eclipse
+*.launch
+.settings/
+.classpath
+.project
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Fabric / Minecraft dev
+run/
+remappedSrc/
