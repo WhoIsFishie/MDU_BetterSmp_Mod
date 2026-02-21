@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -69,7 +69,7 @@ public class MvDevsUnionBetterSMP implements ModInitializer {
 
 		// Block villager interaction
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-			if (CONFIG.disableVillagerInteraction && entity instanceof Villager) {
+			if (CONFIG.disableVillagerInteraction && entity.getType() == EntityType.VILLAGER) {
 				return InteractionResult.FAIL;
 			}
 			return InteractionResult.PASS;
@@ -81,14 +81,14 @@ public class MvDevsUnionBetterSMP implements ModInitializer {
 				for (ServerPlayer player : world.players()) {
 					if ((CONFIG.disableNether && player.level().dimension() == Level.NETHER)
 							|| (CONFIG.disableEnd && player.level().dimension() == Level.END)) {
-						player.hurt(world.damageSources().outOfWorld(), Float.MAX_VALUE);
+						player.hurt(world.damageSources().genericKill(), Float.MAX_VALUE);
 					}
 
 					BlockState atFeet = world.getBlockState(player.blockPosition());
 					BlockState atBody = world.getBlockState(player.blockPosition().above());
 					if ((CONFIG.disableNether && (atFeet.is(Blocks.NETHER_PORTAL) || atBody.is(Blocks.NETHER_PORTAL)))
 							|| (CONFIG.disableEnd && (atFeet.is(Blocks.END_PORTAL) || atBody.is(Blocks.END_PORTAL)))) {
-						player.hurt(world.damageSources().outOfWorld(), Float.MAX_VALUE);
+						player.hurt(world.damageSources().genericKill(), Float.MAX_VALUE);
 					}
 
 					// Remove mending enchanted books from inventory

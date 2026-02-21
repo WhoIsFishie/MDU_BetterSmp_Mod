@@ -1,7 +1,6 @@
 package com.mvdevsunion.mixin;
 
 import com.mvdevsunion.MvDevsUnionBetterSMP;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -29,7 +28,7 @@ public class DisableEnderEyeRecipeMixin {
 			CallbackInfoReturnable<Optional<RecipeHolder<T>>> cir) {
 		if (!MvDevsUnionBetterSMP.CONFIG.disableEnd) return;
 		cir.getReturnValue().ifPresent(holder -> {
-			if (holder.value().getResultItem(world.registryAccess()).is(Items.ENDER_EYE)) {
+			if (holder.id().toString().equals("minecraft:ender_eye")) {
 				cir.setReturnValue(Optional.empty());
 			}
 		});
