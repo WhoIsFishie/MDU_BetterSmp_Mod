@@ -151,7 +151,7 @@ public class MvDevsUnionBetterSMP implements ModInitializer {
 				Commands.literal("bettersmp")
 					.requires(source -> {
 						if (source.getEntity() instanceof ServerPlayer player) {
-							return source.getServer().getPlayerList().isOp(player.getGameProfile());
+							return player.hasPermissions(2);
 						}
 						return true; // console / RCON always has permission
 					})
