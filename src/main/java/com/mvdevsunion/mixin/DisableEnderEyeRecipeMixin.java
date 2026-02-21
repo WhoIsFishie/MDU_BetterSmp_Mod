@@ -1,13 +1,13 @@
 package com.mvdevsunion.mixin;
 
 import com.mvdevsunion.MvDevsUnionBetterSMP;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeManager;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.input.RecipeInput;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,16 +19,17 @@ import java.util.Optional;
 public class DisableEnderEyeRecipeMixin {
 
 	@Inject(
-		method = "getFirstMatch(Lnet/minecraft/recipe/RecipeType;Lnet/minecraft/recipe/input/RecipeInput;Lnet/minecraft/world/World;)Ljava/util/Optional;",
+		method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/item/crafting/RecipeInput;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;",
 		at = @At("RETURN"),
-		cancellable = true
+		cancellable = true,
+		require = 0
 	)
 	private <C extends RecipeInput, T extends Recipe<C>> void blockEnderEyeCraft(
-			RecipeType<T> type, C input, World world,
-			CallbackInfoReturnable<Optional<RecipeEntry<T>>> cir) {
+			RecipeType<T> type, C input, Level world,
+			CallbackInfoReturnable<Optional<RecipeHolder<T>>> cir) {
 		if (!MvDevsUnionBetterSMP.CONFIG.disableEnd) return;
-		cir.getReturnValue().ifPresent(entry -> {
-			if (entry.value().getResult(world.getRegistryManager()).isOf(Items.ENDER_EYE)) {
+		cir.getReturnValue().ifPresent(holder -> {
+			if (holder.value().getResultItem(world.registryAccess()).is(Items.ENDER_EYE)) {
 				cir.setReturnValue(Optional.empty());
 			}
 		});
