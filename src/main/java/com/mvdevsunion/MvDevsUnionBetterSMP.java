@@ -149,12 +149,7 @@ public class MvDevsUnionBetterSMP implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 			dispatcher.register(
 				Commands.literal("bettersmp")
-					.requires(source -> {
-						if (source.getEntity() instanceof ServerPlayer player) {
-							return source.getServer().getPlayerList().isOp(player);
-						}
-						return true; // console / RCON always has permission
-					})
+					.requires(source -> source.getPermissionLevel() >= 2)
 					.then(Commands.literal("reload")
 						.executes(ctx -> {
 							CONFIG = ConfigManager.load();
