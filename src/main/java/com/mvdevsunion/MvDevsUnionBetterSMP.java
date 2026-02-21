@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.Permissions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -149,7 +150,7 @@ public class MvDevsUnionBetterSMP implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 			dispatcher.register(
 				Commands.literal("bettersmp")
-					.requires(Commands.requirePermissionLevel(2))
+					.requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_MODERATOR))
 					.then(Commands.literal("reload")
 						.executes(ctx -> {
 							CONFIG = ConfigManager.load();
