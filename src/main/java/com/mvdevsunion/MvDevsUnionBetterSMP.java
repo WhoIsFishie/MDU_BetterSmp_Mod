@@ -149,7 +149,7 @@ public class MvDevsUnionBetterSMP implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 			dispatcher.register(
 				Commands.literal("bettersmp")
-					.requires(source -> source.getPermissionLevel() >= 2)
+					.requires(Commands.requirePermissionLevel(2))
 					.then(Commands.literal("reload")
 						.executes(ctx -> {
 							CONFIG = ConfigManager.load();
